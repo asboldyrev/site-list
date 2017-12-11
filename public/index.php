@@ -19,7 +19,7 @@
 <body>
 <?php
 	$list = scandir("../../");
-	$list = array_diff($list, ['.', '..', 'access_log', 'list']);
+	$list = array_diff($list, ['.', '..', 'access_log', 'list', '.Trash-1000']);
 
 	$domain = $_SERVER['HTTP_HOST'];
 
