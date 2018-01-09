@@ -1,10 +1,14 @@
 <?php
-	function ExtractDomain($Host, $Level = 2, $IgnoreWWW = false) {
-		$Parts = explode(".", $Host);
-		if($IgnoreWWW and $Parts[0] == 'www') unset($Parts[0]);
-		$Parts = array_slice($Parts, -$Level);
-		return implode(".", $Parts);
+function ExtractDomain($Host, $Level = 2, $IgnoreWWW = false) {
+	$Parts = explode(".", $Host);
+	if ($IgnoreWWW and $Parts[ 0 ] == 'www') {
+		unset($Parts[ 0 ]);
 	}
+	$Parts = array_slice($Parts, -$Level);
+
+	return implode(".", $Parts);
+}
+
 ?>
 
 <!doctype html>
@@ -20,31 +24,63 @@
 	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
 </head>
 <body>
-<?php
-	$list = scandir("../../");
-	$list = array_diff($list, ['.', '..', 'access_log', 'list', '.Trash-1000']);
+	<div class="container">
+		<?php
+			$path = "../../";
+			$exceptions = [ '.', '..', 'access_log', 'list', '.Trash-1000', '.idea', '.Trash-1000', 'lost+found' ];
 
-	$domain = $_SERVER['HTTP_HOST'];
+			$list = scandir($path);
+			$list = array_diff($list, $exceptions);
 
-	if (is_int(mb_strpos($domain, '.dev'))) {
-		$domain = ExtractDomain($_SERVER['HTTP_HOST'], 1);
-	} else {
-		$domain = ExtractDomain($_SERVER['HTTP_HOST']);
-	}
-?>
-	<div class="row mt20px">
-		<div class="col-xs-10 col-sm-8 col-md-6 col-lg-4 col-xs-offset-1 col-sm-offset-2 col-md-offset-3 col-lg-offset-4">
-			<h3 class="text-center">Список сайтов на <?php echo $_SERVER['HTTP_HOST'] ?></h3>
+			$domain = $_SERVER[ 'HTTP_HOST' ];
 
-			<div class="panel panel-default">
-				<div class="list-group">
-					<?php foreach ($list as $dir) { ?>
-						<a
-							class="list-group-item"
-							href="http://<?php echo $dir . '.' . $domain ?>"
-							target="_blank"
-						><?php echo $dir ?></a>
-					<?php } ?>
+			if (is_int(mb_strpos($domain, '.dev'))) {
+				$domain = ExtractDomain($_SERVER[ 'HTTP_HOST' ], 1);
+			} else {
+				$domain = ExtractDomain($_SERVER[ 'HTTP_HOST' ]);
+			}
+		?>
+		<div class="row mt20px">
+			<div
+				class="col-xs-10 col-sm-8 col-md-6 col-lg-4 col-xs-offset-1 col-sm-offset-2 col-md-offset-3 col-lg-offset-4">
+				<h3 class="text-center">Список сайтов на <?php echo $_SERVER[ 'HTTP_HOST' ] ?></h3>
+
+				<div class="panel panel-default">
+					<div class="list-group">
+						<?php foreach ($list as $dir) { ?>
+
+							<a
+								class="list-group-item"
+								href="http://<?php echo $dir . '.' . $domain ?>"
+								target="_blank"
+							>
+								<span class="icon">
+									<?php
+									$data = '';
+
+									if (file_exists($path . $dir . '/public/img/layout/favicon.png')) {
+										$data = file_get_contents($path . $dir . '/public/img/layout/favicon.png');
+
+									} elseif (file_exists($path . $dir . '/public/img/favicon.png')) {
+										$data = file_get_contents($path . $dir . '/public/img/favicon.png');
+
+									} elseif (file_exists($path . $dir . '/public/favicon.png')) {
+										$data = file_get_contents($path . $dir . '/public/favicon.png');
+
+									}
+
+									$base64 = 'data:image/png;base64,' . base64_encode($data);
+
+									?>
+
+									<?php if($data) { ?>
+										<img src="<?php echo $base64; ?>" alt="">
+									<?php } ?>
+								</span>
+								<?php echo $dir ?>
+							</a>
+						<?php } ?>
+					</div>
 				</div>
 			</div>
 		</div>
