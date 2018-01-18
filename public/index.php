@@ -17,6 +17,7 @@ function ExtractDomain($Host, $Level = 2, $IgnoreWWW = false) {
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<title>Список сайтов</title>
+	<link rel="shortcut icon" href="img/favicon.png">
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap-theme.min.css">
 	<link rel="stylesheet" type="text/css" href="/css/app.css">
