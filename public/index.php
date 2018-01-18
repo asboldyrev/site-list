@@ -47,6 +47,21 @@ function ExtractDomain($Host, $Level = 2, $IgnoreWWW = false) {
 
 				<div class="panel panel-default">
 					<div class="list-group">
+						<a class="list-group-item" target="_blank" href="http://localhost/phpmyadmin">
+							<span class="icon">
+								<?php
+								$data = file_get_contents('http://localhost/phpmyadmin/favicon.ico');
+								$base64 = 'data:image/ico;base64,' . base64_encode($data);
+								?>
+									<img src="<?php echo $base64; ?>" alt="">
+							</span>
+							phpMyAdmin
+						</a>
+					</div>
+				</div>
+				
+				<div class="panel panel-default">
+					<div class="list-group">
 						<?php foreach ($list as $dir) { ?>
 
 							<a
