@@ -9,6 +9,14 @@ function ExtractDomain($Host, $Level = 2, $IgnoreWWW = false) {
 	return implode(".", $Parts);
 }
 
+if (file_exists('/etc/dnsmasq.conf')) {
+	$pattern = '/^address=\/([\w]*)\/127\.0\.0\.1/m';
+	$conf = file_get_contents('/etc/dnsmasq.conf');
+	preg_match_all($pattern, $conf, $matches);
+	$root_domain = $matches[1][0];
+} else {
+	$root_domain = 'loc';
+}
 ?>
 
 <!doctype html>
@@ -35,7 +43,7 @@ function ExtractDomain($Host, $Level = 2, $IgnoreWWW = false) {
 
 			$domain = $_SERVER[ 'HTTP_HOST' ];
 
-			if (is_int(mb_strpos($domain, '.dev'))) {
+			if (is_int(mb_strpos($domain, '.' . $root_domain))) {
 				$domain = ExtractDomain($_SERVER[ 'HTTP_HOST' ], 1);
 			} else {
 				$domain = ExtractDomain($_SERVER[ 'HTTP_HOST' ]);
@@ -46,7 +54,7 @@ function ExtractDomain($Host, $Level = 2, $IgnoreWWW = false) {
 				class="col-xs-10 col-sm-8 col-md-6 col-lg-4 col-xs-offset-1 col-sm-offset-2 col-md-offset-3 col-lg-offset-4">
 				<h3 class="text-center">Список сайтов на <?php echo $_SERVER[ 'HTTP_HOST' ] ?></h3>
 
-				<?php if ($domain == 'dev') { ?>
+				<?php if ($domain == $root_domain) { ?>
 					<div class="panel panel-default">
 						<div class="list-group">
 							<a class="list-group-item" target="_blank" href="http://localhost/phpmyadmin">
@@ -67,11 +75,13 @@ function ExtractDomain($Host, $Level = 2, $IgnoreWWW = false) {
 					<div class="list-group">
 						<?php foreach ($list as $dir) { ?>
 
-							<a
-								class="list-group-item"
-								href="http://<?php echo $dir . '.' . $domain ?>"
-								target="_blank"
-							>
+							<div class="list-group-item">
+								<div class="buttons-group">
+									<a
+										class="buttons"
+										href="http://<?php echo $dir . '.' . $domain ?>"
+										target="_blank"
+									>
 								<span class="icon">
 									<?php
 									$data = '';
@@ -95,8 +105,17 @@ function ExtractDomain($Host, $Level = 2, $IgnoreWWW = false) {
 										<img src="<?php echo $base64; ?>" alt="">
 									<?php } ?>
 								</span>
-								<?php echo $dir ?>
-							</a>
+										<?php echo $dir ?>
+									</a>
+									<?php if (is_dir($path . $dir . '/vendor/chunker/base/') || is_dir($path . $dir . '/chunker/')) { ?>
+										<a
+											href="http://<?php echo $dir . '.' . $domain . '/admin' ?>"
+											target="_blank"
+											class="buttons"
+										>Админка</a>
+									<?php } ?>
+								</div>
+							</div>
 						<?php } ?>
 					</div>
 				</div>

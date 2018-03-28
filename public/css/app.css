@@ -9,3 +9,33 @@
 	margin-left: -28px;
 	width: 24px;
 }
+
+.buttons-group {
+	margin: -10px -15px;
+	display: flex;
+}
+
+.buttons {
+	color: #555;
+	cursor: pointer;
+	text-decoration: none;
+	padding: 10px 15px;
+}
+
+.buttons:first-child {
+	flex-grow: 1;
+}
+
+.buttons:last-child {
+	outline: #ddd solid 1px;
+}
+
+.buttons:hover {
+	color: #555;
+	text-decoration: none;
+	background-color: #f5f5f5;
+}
+
+.buttons:focus, .buttons:visited {
+	text-decoration: none;
+}
