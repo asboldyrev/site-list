@@ -95,6 +95,9 @@ if (file_exists('/etc/dnsmasq.conf')) {
 									} elseif (file_exists($path . $dir . '/public/favicon.png')) {
 										$data = file_get_contents($path . $dir . '/public/favicon.png');
 
+									} elseif (file_exists($path . $dir . '/public/assets/favicon.png')) {
+										$data = file_get_contents($path . $dir . '/public/assets/favicon.png');
+
 									}
 
 									$base64 = 'data:image/png;base64,' . base64_encode($data);
