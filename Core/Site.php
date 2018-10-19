@@ -24,6 +24,7 @@ class Site
 		'/public/img/layout/favicon.png',
 		'/public/img/favicon.png',
 		'/public/favicon.png',
+		'/public/assets/favicon.png'
 	];
 
 
