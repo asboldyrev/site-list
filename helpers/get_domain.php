@@ -1,6 +1,6 @@
 <?php
 
-if (!function_exists('get_root_domain')) {
+if (!function_exists('get_domain')) {
 	function get_domain(string $host, int $level = 2, $ignoreWWW = false) {
 		$parts = explode('.', $host);
 
