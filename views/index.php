@@ -17,23 +17,6 @@
 		<div
 			class="col-xs-10 col-sm-8 col-md-6 col-lg-4 col-xs-offset-1 col-sm-offset-2 col-md-offset-3 col-lg-offset-4">
 			<h3 class="text-center">Список сайтов на <?= host() ?></h3>
-			<?php if (env('PHPMYADMIN_ACTIVE')) { ?>
-				<div class="panel panel-default">
-					<div class="list-group">
-						<a class="list-group-item" target="_blank" href="http://localhost/phpmyadmin">
-								<span class="icon">
-									<?php
-									$data = file_get_contents('http://localhost/phpmyadmin/favicon.ico');
-									$base64 = 'data:image/ico;base64,' . base64_encode($data);
-									?>
-									<img src="<?php echo $base64; ?>" alt="">
-								</span>
-							phpMyAdmin
-						</a>
-					</div>
-				</div>
-			<?php } ?>
-
 			<div class="panel panel-default">
 				<div class="list-group">
 					<?php foreach ($sites->getSites() as $site) { ?>

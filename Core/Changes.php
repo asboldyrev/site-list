@@ -6,6 +6,10 @@ namespace Core;
 class Changes
 {
 	public static function isChange(array $list):bool {
+		if (!file_exists(base_path('count_sites.txt'))) {
+			return true;
+		}
+
 		$current_count = count($list);
 		$last_count = file_get_contents(base_path('count_sites.txt'));
 

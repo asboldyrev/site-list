@@ -21,10 +21,13 @@ class Site
 	protected $isChunker = false;
 
 	protected $faviconPaths = [
+		'/public/favicon.ico',
 		'/public/img/layout/favicon.png',
+		'/public/img/layout/logo.png',
 		'/public/img/favicon.png',
 		'/public/favicon.png',
-		'/public/assets/favicon.png'
+		'/public/assets/favicon.png',
+		'/favicon.ico',
 	];
 
 
@@ -36,9 +39,14 @@ class Site
 		$self = new static();
 
 		foreach ($self->faviconPaths as $faviconPath) {
-			if (file_exists($path . $faviconPath)) {
+			if (
+				file_exists($path . $faviconPath) &&
+				filesize($path . $faviconPath)
+			) {
+				$mime_type = mime_content_type($path . $faviconPath);
+
 				$data = file_get_contents($path . $faviconPath);
-				$self->icon = 'data:image/png;base64,' . base64_encode($data);
+				$self->icon = 'data:' . $mime_type . ';base64,' . base64_encode($data);
 				break;
 			}
 		}
