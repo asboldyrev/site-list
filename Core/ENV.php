@@ -17,6 +17,46 @@ class ENV
 
 
 	/**
+	 * @param string     $parameter
+	 * @param mixed|null $default
+	 *
+	 * @return mixed|null
+	 */
+	public function get(string $parameter, $default = NULL) {
+		if (key_exists($parameter, $this->env)) {
+			return $this->env[ $parameter ];
+		} else {
+			return $default;
+		}
+	}
+
+
+	/**
+	 * @param string $parameter
+	 * @param mixed  $value
+	 */
+	public function set(string $parameter, $value) {
+		if (key_exists($parameter, $this->env)) {
+			$this->env[ $parameter ] = $value;
+		}
+	}
+
+
+	protected function parseEnvironment() {
+		$dot_env = file_get_contents(base_path('.env'));
+
+		$parameters = explode(PHP_EOL, $dot_env);
+
+		foreach ($parameters as $parameter) {
+			if (mb_strlen($parameter)) {
+				list($key, $value) = explode('=', $parameter);
+				$this->prepareParameter($key, $value);
+			}
+		}
+	}
+
+
+	/**
 	 * @param string $key
 	 * @param string $value
 	 */
@@ -51,47 +91,7 @@ class ENV
 	}
 
 
-	protected function parseEnvironment() {
-		$dot_env = file_get_contents(base_path('.env'));
-
-		$parameters = explode(PHP_EOL, $dot_env);
-
-		foreach ($parameters as $parameter) {
-			if (mb_strlen($parameter)) {
-				list($key, $value) = explode('=', $parameter);
-				$this->prepareParameter($key, $value);
-			}
-		}
-	}
-
-
 	private function __construct() {
 		$this->parseEnvironment();
-	}
-
-
-	/**
-	 * @param string     $parameter
-	 * @param mixed|null $default
-	 *
-	 * @return mixed|null
-	 */
-	public function get(string $parameter, $default = NULL) {
-		if (key_exists($parameter, $this->env)) {
-			return $this->env[ $parameter ];
-		} else {
-			return $default;
-		}
-	}
-
-
-	/**
-	 * @param string $parameter
-	 * @param mixed  $value
-	 */
-	public function set(string $parameter, $value) {
-		if (key_exists($parameter, $this->env)) {
-			$this->env[ $parameter ] = $value;
-		}
 	}
 }

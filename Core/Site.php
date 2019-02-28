@@ -31,9 +31,6 @@ class Site
 	];
 
 
-	private function __construct() { }
-
-
 	public static function create(string $name):self {
 		$path = env('SCAN_DIR') . '/' . $name;
 		$self = new static();
@@ -121,4 +118,7 @@ class Site
 
 		return is_dir($path . $name . '/vendor/chunker/base/') || is_dir($path . $name . '/chunker/');
 	}
+
+
+	private function __construct() { }
 }

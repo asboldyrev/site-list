@@ -5,6 +5,7 @@ namespace Core;
 
 class SitesList
 {
+	/** @var Site[] $sites */
 	protected $sites = [];
 
 
@@ -24,6 +25,8 @@ class SitesList
 			$this->sites[] = Site::create($item);
 		}
 
+		$this->sortSites();
+
 		$this->putDataToFile();
 	}
 
@@ -34,11 +37,36 @@ class SitesList
 		foreach ($data as $item) {
 			$this->sites[] = Site::load(unserialize($item));
 		}
+
+		$this->sortSites();
 	}
 
 
 	public function getSites():array {
 		return $this->sites;
+	}
+
+	public function getGroupedSites():array {
+		$result = [];
+		$letter = '';
+
+		foreach ($this->sites as $site) {
+			$_letter = mb_substr($site->getName(), 0, 1);
+			if ($_letter != $letter) {
+				$letter = $_letter;
+			}
+
+			$result[ mb_strtoupper($letter) ][] = $site;
+		}
+
+		return $result;
+	}
+
+
+	protected function sortSites():void {
+		usort($this->sites, function(Site $first, Site $second) {
+			return $first->getName() > $second->getName();
+		});
 	}
 
 

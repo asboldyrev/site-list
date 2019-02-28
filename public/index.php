@@ -15,4 +15,5 @@ if (mb_strpos($domain, '.' . $root_domain) !== false) {
 }
 
 
+$groupedSites = $sites->getGroupedSites();
 include '../views/index.php';
