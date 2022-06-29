@@ -1,19 +1,27 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 'true');
 
-require_once '../bootstrap/autoload.php';
+use Dotenv\Dotenv;
+use Sites\SiteList;
 
-$sites = new \Core\SitesList();
-$domain = host();
-$root_domain = env('ROOT_DOMAIN');
+require_once '../vendor/autoload.php';
 
-if (mb_strpos($domain, '.' . $root_domain) !== false) {
-	$domain = get_domain($domain, 1);
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
+
+if(env('DEBUG')) {
+	error_reporting(E_ALL);
+	ini_set('display_errors', 'true');
+}
+
+$list = new SiteList();
+
+if(key_exists('sort', $_GET) && $_GET['sort'] == 'update') {
+	$list->sort('lastUpdate', 'desc');
+	$sort = 'update';
 } else {
-	$domain = get_domain($domain);
+	$list->sort('name');
+	$sort = 'name';
 }
 
 
-$groupedSites = $sites->getGroupedSites();
-include '../views/index.php';
+include '../src/template.php';

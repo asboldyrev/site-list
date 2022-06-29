@@ -1,3 +1,4 @@
-count_sites.txt
-sites.txt
 .env
+/vendor/
+storage/
+old/

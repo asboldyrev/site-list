@@ -1,0 +1,22 @@
+{
+    "name": "boldyreva/list",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "boldyrev.a",
+            "email": "boldyrev.a@studio2i.ru"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.3"
+    },
+	"autoload": {
+		"psr-4": {
+			"Sites\\": "src/"
+		},
+		"files": [
+			"./src/helpers.php"
+		]
+	}
+}
